@@ -71,8 +71,8 @@ metadata_startup_script = <<-SCRIPT
     sudo sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
     sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
     # Modify /etc/ssh/sshd_configcd t
-    sudo sed -i '39s/^#//' /etc/ssh/sshd_config
-    sudo sed -i '42s/^#//' /etc/ssh/sshd_config
+    #sudo sed -i '39s/^#//' /etc/ssh/sshd_config
+    #sudo sed -i '42s/^#//' /etc/ssh/sshd_config
     sudo systemctl restart sshd
     SCRIPT
 }
