@@ -59,7 +59,7 @@ service_account {
 tags = ["desktop"]
 
 metadata = {
-  ssh-keys = "root:${file("/root/.ssh/id_rsa.pub")}"
+  ssh-keys = "root:${file("/var/lib/jenkins/.ssh/id_rsa.pub")}"
 }
 
 metadata_startup_script = <<-SCRIPT
