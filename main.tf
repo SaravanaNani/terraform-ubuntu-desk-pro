@@ -5,21 +5,17 @@ provider "google" {
 locals {
   env = "deskpro"
 }
-resource "google_compute_network" "custom_network" {
-  name                    = "${local.env}-network"
-  auto_create_subnetworks = false
-}
 
 resource "google_compute_subnetwork" "custom_subnet" {
   name          = "${local.env}-subnet-1"
   region        = "us-west1"  # Specify the same region as the VPC
-  network       = google_compute_network.custom_network.self_link
+  network       = "jenkins-network"
   ip_cidr_range = "10.0.2.0/24"  # Specify the CIDR range for your subnets
 }
 
 resource "google_compute_firewall" "allow_firewall" {
   name    = "${local.env}-allow-8080"
-  network = google_compute_network.custom_network.self_link
+  network = "jenkins-network"
   direction = "INGRESS"
   priority = 1000
   
@@ -28,7 +24,7 @@ resource "google_compute_firewall" "allow_firewall" {
   }
 
   source_ranges = ["0.0.0.0/0"]  # Allow traffic from any source
-  target_tags = ["jenkins"]
+  target_tags = ["desktop"]
 }
 
 
@@ -49,7 +45,7 @@ resource "google_compute_instance" "my_instance" {
   }
 
 network_interface {
-    network = google_compute_network.custom_network.self_link
+    network = "jenkins-network"
     subnetwork = google_compute_subnetwork.custom_subnet.self_link
  
     access_config {}
