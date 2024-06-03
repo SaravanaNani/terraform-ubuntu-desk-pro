@@ -58,6 +58,10 @@ service_account {
 
 tags = ["desktop"]
 
+metadata = {
+  ssh-keys = "root:${file("/root/.ssh/id_rsa.pub")}"
+}
+
 metadata_startup_script = <<-SCRIPT
     #!/bin/bash
     sudo apt-get update
