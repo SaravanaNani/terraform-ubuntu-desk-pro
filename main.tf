@@ -3,19 +3,19 @@ provider "google" {
   region      = "us-central1"
 }
 locals {
-  env = "deskpro"
+  env = "desk"
 }
 
 resource "google_compute_subnetwork" "custom_subnet" {
   name          = "${local.env}-subnet-1"
   region        = "us-west1"  # Specify the same region as the VPC
-  network       = "jenkins-network"
-  ip_cidr_range = "10.0.2.0/24"  # Specify the CIDR range for your subnets
+  network       = "jens-network"
+  ip_cidr_range = "10.0.4.0/24"  # Specify the CIDR range for your subnets
 }
 
 resource "google_compute_firewall" "allow_firewall" {
   name    = "${local.env}-allow-8080"
-  network = "jenkins-network"
+  network = "jens-network"
   direction = "INGRESS"
   priority = 1000
   
@@ -31,8 +31,8 @@ resource "google_compute_firewall" "allow_firewall" {
 # Create a Google Compute Engine instance
 resource "google_compute_instance" "my_instance" {
   name         = "${local.env}"
-  machine_type = "n1-standard-1"
-  zone         = "us-west1-a"
+  machine_type = "n2-standard-2"
+  zone         = "us-west1-b"
 
   boot_disk {
     auto_delete = true
@@ -45,7 +45,7 @@ resource "google_compute_instance" "my_instance" {
   }
 
 network_interface {
-    network = "jenkins-network"
+    network = "jens-network"
     subnetwork = google_compute_subnetwork.custom_subnet.self_link
  
     access_config {}
