@@ -9,13 +9,13 @@ locals {
 resource "google_compute_subnetwork" "custom_subnet" {
   name          = "${local.env}-subnet-1"
   region        = "us-west1"  # Specify the same region as the VPC
-  network       = "jens-network"
+  network       = "jenkins-vpc"
   ip_cidr_range = "10.0.4.0/24"  # Specify the CIDR range for your subnets
 }
 
 resource "google_compute_firewall" "allow_firewall" {
   name    = "${local.env}-allow-8080"
-  network = "jens-network"
+  network = "jenkins-vpc"
   direction = "INGRESS"
   priority = 1000
   
@@ -45,7 +45,7 @@ resource "google_compute_instance" "my_instance" {
   }
 
 network_interface {
-    network = "jens-network"
+    network = "jenkins-vpc"
     subnetwork = google_compute_subnetwork.custom_subnet.self_link
  
     access_config {}
